@@ -1,4 +1,4 @@
-#+BEGIN_EXPORT
+#+BEGIN_HTML
 ---
 layout: post
 title: Test Org Jekyll
@@ -8,7 +8,7 @@ categories:
 tags:
   -  
 ---
-#+END_EXPORT
+#+END_HTML
 
 * adfjaksdf
 
