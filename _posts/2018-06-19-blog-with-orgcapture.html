@@ -48,9 +48,75 @@ Then, I realize that it not the best way, because I configure my org-agenda rece
 So I build my blog template in org-capture combined with the metioned article above.
 </p>
 </div>
+
+<div id="outline-container-orgda776de" class="outline-4">
+<h4 id="orgda776de"><span class="section-number-4">2.3.1</span> Generate the draft</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+At first, I need to generate a random string for the draft org file.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span style="color: #8c8c8c;">(</span><span style="color: #808bed;">defun</span> <span style="color: #c080d0;">random-alnum</span> <span style="color: #93a8c6;">()</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #808bed;">let*</span> <span style="color: #b0b1a3;">(</span><span style="color: #97b098;">(</span>alnum <span style="color: #ffcd8b; background-color: #404040;">"abcdefghijklmnopqrstuvwxyz0123456789"</span><span style="color: #97b098;">)</span>
+         <span style="color: #97b098;">(</span>i <span style="color: #aebed8;">(</span>% <span style="color: #b0b0b3;">(</span>abs <span style="color: #90a890;">(</span>random<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>length alnum<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
+    <span style="color: #b0b1a3;">(</span>substring alnum i <span style="color: #97b098;">(</span>1+ i<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #808bed;">defun</span> <span style="color: #c080d0;">random-string</span> <span style="color: #93a8c6;">(</span>length<span style="color: #93a8c6;">)</span>
+  <span style="color: #93a8c6;">(</span>setq result <span style="color: #ffcd8b; background-color: #404040;">""</span><span style="color: #93a8c6;">)</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #808bed;">dotimes</span> <span style="color: #b0b1a3;">(</span>i length<span style="color: #b0b1a3;">)</span>
+    <span style="color: #b0b1a3;">(</span>setq result <span style="color: #97b098;">(</span>concat result <span style="color: #aebed8;">(</span>random-alnum<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
+  result<span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #808bed;">defun</span> <span style="color: #c080d0;">blog-file</span> <span style="color: #93a8c6;">(</span>path<span style="color: #93a8c6;">)</span>
+  <span style="color: #93a8c6;">(</span>expand-file-name <span style="color: #b0b1a3;">(</span>format <span style="color: #ffcd8b; background-color: #404040;">"%s.org"</span> <span style="color: #97b098;">(</span>random-string <span style="color: #f0ad6d;">6</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span> path<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<p>
+I prefer to use org capture to fill the file name.
+But I tried many ways, it seems impossible to define the capture file name dynamic, so I use random string.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span style="color: #8c8c8c;">(</span>add-to-list 'org-capture-templates
+         `<span style="color: #93a8c6;">(</span><span style="color: #ffcd8b; background-color: #404040;">"b"</span> <span style="color: #ffcd8b; background-color: #404040;">"Blog"</span> plain <span style="color: #b0b1a3;">(</span>file ,<span style="color: #97b098;">(</span>blog-file <span style="color: #aebed8;">(</span>concat jekyll-directory jekyll-drafts-dir<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
+           ,<span style="color: #b0b1a3;">(</span>concat <span style="color: #ffcd8b; background-color: #404040;">"#+startup: showall\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"#+CATEGORY: blog\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"#+begin_export html\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"---\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"layout     : post\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"title      : %^{&#26631;&#39064;}\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"categories : %^{&#31867;&#21035;}\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"tags       : [%^{&#26631;&#31614;}]\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"---\n"</span>
+                    <span style="color: #ffcd8b; background-color: #404040;">"#+end_export\n"</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<p>
+After org capture, I can generate the basic part of jekyll required and focus on my main blog.
+</p>
 </div>
 </div>
 
-<div id="outline-container-org94d6b5e" class="outline-2">
-<h2 id="org94d6b5e"><span class="section-number-2">3</span> Enhancement</h2>
+<div id="outline-container-orgdb7a0f5" class="outline-4">
+<h4 id="orgdb7a0f5"><span class="section-number-4">2.3.2</span> Convert draft to post org file</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+When I finished my blog, I can call <code>jekyll-publish-post</code> to post org file and rename the file.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbe65669" class="outline-4">
+<h4 id="orgbe65669"><span class="section-number-4">2.3.3</span> Publish org to html</h4>
+<div class="outline-text-4" id="text-2-3-3">
+<p>
+At last, I call <code>org-publish</code> to generate html, and commit the post org file with the html.
+Then github will help me to do the remain work. You can see my blog <a href="https://blog.thinkimi.com">here</a>.
+</p>
+</div>
+</div>
+</div>
 </div>
