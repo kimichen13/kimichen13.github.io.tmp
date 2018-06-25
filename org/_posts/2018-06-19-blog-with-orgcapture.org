@@ -1,0 +1,20 @@
+#+startup: showall
+#+CATEGORY: blog
+#+begin_export html
+---
+layout     : post
+title      : Blog with org-capture
+categories : emacs
+tags       : [emacs, org-capture, blog]
+---
+#+end_export
+* Requirement
+
+  + Jekyll
+  + org-capture
+  + Github
+
+* Steps
+
+* Enhancement
+
