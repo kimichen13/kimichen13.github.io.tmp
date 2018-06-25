@@ -18,7 +18,7 @@ tags       : [emacs, org-capture, blog]
 
 ** Jekyll
 
-   You can choose your theme on [[http://jekyllthemes.org/][http://jekyllthemes.org/]]. And I choose one of them.
+   You can choose your theme on [[http://jekyllthemes.org/][http://jekyllthemes.org/]]. And I choose one of them - [[https://mmistakes.github.io/hpstr-jekyll-theme/][HPSTR Theme]].
    If you don't like it, you can change anytime. And here is official website - [[https://jekyllrb.com/docs/themes/][Jekyll-theme]].
 
 ** Github
