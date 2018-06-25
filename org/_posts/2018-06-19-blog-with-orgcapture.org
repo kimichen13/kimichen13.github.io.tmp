@@ -11,10 +11,73 @@ tags       : [emacs, org-capture, blog]
 * Requirement
 
   + Jekyll
-  + org-capture
+  + Org Capture
   + Github
 
 * Steps
 
-* Enhancement
+** Jekyll
+
+   You can choose your theme on [[http://jekyllthemes.org/][http://jekyllthemes.org/]]. And I choose one of them.
+   If you don't like it, you can change anytime. And here is official website - [[https://jekyllrb.com/docs/themes/][Jekyll-theme]].
+
+** Github
+
+   It is really easy to use github pages to publish blog - [[https://jekyllrb.com/docs/github-pages/][Github Pages]].
+
+** Org Capture
+
+   I am a fun of emacs, so I choose org rather than markdown defined by Jekyll.
+   At first, I refer to [[http://cute-jumper.github.io/emacs/2013/10/06/orgmode-to-github-pages-with-jekyll][Org-mode to GitHub pages with Jekyll]]. And I build my own configuration very quickly, thanks a lot.
+   Then, I realize that it not the best way, because I configure my org-agenda recently.
+   So I build my blog template in org-capture combined with the metioned article above.
+
+*** Generate the draft
+
+    At first, I need to generate a random string for the draft org file.
+
+    #+BEGIN_SRC lisp
+(defun random-alnum ()
+  (let* ((alnum "abcdefghijklmnopqrstuvwxyz0123456789")
+         (i (% (abs (random)) (length alnum))))
+    (substring alnum i (1+ i))))
+
+(defun random-string (length)
+  (setq result "")
+  (dotimes (i length)
+    (setq result (concat result (random-alnum))))
+  result)
+
+(defun blog-file (path)
+  (expand-file-name (format "%s.org" (random-string 6)) path))
+    #+END_SRC
+
+    I prefer to use org capture to fill the file name.
+    But I tried many ways, it seems impossible to define the capture file name dynamic, so I use random string.
+
+    #+BEGIN_SRC lisp
+    (add-to-list 'org-capture-templates
+             `("b" "Blog" plain (file ,(blog-file (concat jekyll-directory jekyll-drafts-dir)))
+               ,(concat "#+startup: showall\n"
+                        "#+CATEGORY: blog\n"
+                        "#+begin_export html\n"
+                        "---\n"
+                        "layout     : post\n"
+                        "title      : %^{标题}\n"
+                        "categories : %^{类别}\n"
+                        "tags       : [%^{标签}]\n"
+                        "---\n"
+                        "#+end_export\n")))
+    #+END_SRC
+
+    After org capture, I can generate the basic part of jekyll required and focus on my main blog.
+
+*** Convert draft to post org file
+
+    When I finished my blog, I can call ~jekyll-publish-post~ to post org file and rename the file.
+
+*** Publish org to html
+
+    At last, I call ~org-publish~ to generate html, and commit the post org file with the html.
+    Then github will help me to do the remain work. You can see my blog [[https://blog.thinkimi.com][here]].
 
