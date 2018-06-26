@@ -4,6 +4,7 @@
 ---
 layout     : post
 title      : 淘宝业务及技术实现
+description: 分析淘宝现有业务并实现部分功能系统化管理
 categories : business
 tags       : [taobao, business]
 ---
