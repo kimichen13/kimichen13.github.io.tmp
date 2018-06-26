@@ -1,0 +1,33 @@
+#+startup: showall
+#+FILETAGS: :blog:
+#+begin_export html
+---
+layout     : post
+title      : 淘宝业务及技术实现
+categories : business
+tags       : [taobao, business]
+---
+#+end_export
+* 技术选型
+
+  + PostgreSQL
+  + Clojure
+  + React
+
+* 业务分析
+
+** DOING 模块划分 [0%]
+
+   + [ ] 管理员模块 [0/5]
+     - [ ] 登录模块和权限控制
+     - [ ] 商品管理
+     - [ ] 渠道管理
+     - [ ] 财务结算
+     - [ ] 账户管理
+
+   + [ ] 客户管理 [0/2]
+     - [ ] 客户信息管理
+     - [ ] 客户售后管理
+
+   + [ ] 订单管理 [0/1]
+     - [ ] 客户订单管理

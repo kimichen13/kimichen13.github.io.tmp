@@ -1,5 +1,5 @@
 #+startup: showall
-#+CATEGORY: blog
+#+FILETAGS: blog
 #+begin_export html
 ---
 layout     : post
